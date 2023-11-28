@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease detection application</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/x-icon">
+</head>
+
+<style>
+    body {
+        background-color: #f4f4f4;
+    }
+    
+    .container {
+        margin-top: 10px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    #erosion-result {
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+    }
+    
+    #sample-image {
+        margin-top: 20px;
+        max-width: 100%;
+    }
+    
+    #predicted {
+        /*margin-top: 20px;*/
+        max-width: 100%;
+        width: 100%;
+        height: 250px;
+        /*object-fit: contain;*/
+        object-fit: revert-layer;
+    }
+</style>
+
+<body>
+
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static',filename='img/reversed.jpg') }}" alt="Logo" width="40" height="30" class="d-inline-block align-text-top">
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Plant Leaf Disease Detection</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <hr class="border border-primary border-3 opacity-75">
+                <form method="post" action="{{url_for('home')}}" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="rainfall ">Live Location Name or City Name</label>
+                        <input type="text" class="form-control" id="rainfall" name="location" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="slope ">Upload</label>
+                        <input type="file" class="form-control" id="slope" accept=".jpg" name="img" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary ">Detect</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div id="erosion-result">
+                    {% if location %}
+                    <h2>Detection Result of your image</h2>
+                    <hr class="border border-primary border-3 opacity-75">
+                    <p>Your Location:- {{location}}</p>
+                    <hr>
+                    <p>Prediction Result:- {{result['Class name']}} Plant</p>
+                </div>
+                {% endif %}
+                <div>
+                    <hr class="border border-success border-3 opacity-75"> {% if img %}
+                    <div class="row">
+                        <div class="col">
+                            <img src="{{ url_for('uploaded_file', filename=img) }}" alt="Uploaded Image" id="predicted" class="img-fluid">
+                        </div>
+                        <div class="col">
+                            <p>{{result['pred_des']}}</p>
+                            <a href="{{ result['pred_link'] }}" target="_blank">Read Article</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/main_img_2.png') }}" alt="Sample Image" id="sample-image" class="img-fluid my-2" style="border-radius: 4%;"> {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

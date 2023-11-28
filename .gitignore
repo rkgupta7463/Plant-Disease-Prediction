@@ -1,0 +1,7 @@
+# Ignore the 'model' directory
+models/
+
+# Ignore the 'env' directory
+env/
+
+.vscode/
